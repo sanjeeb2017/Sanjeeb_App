@@ -36,12 +36,20 @@ def rt_stock_price():
     s = Stock(ticker_name)
     return '%s' %(s.price)
 
-@app.route('/earning_cal',methods=['GET', 'POST'])
-def earningcal_call():
+@app.route('/Nasdaq_Data',methods=['GET', 'POST'])
+def Nasdaq_RT_Call():
     ticker_name=request.args.get('ticker_name')
-    yahoo_financials = YahooFinancials(ticker_name)
-    earning_cal_data=yahoo_financials.get_stock_earnings_data() 
-    return jsonify(results = earning_cal_data)
+    s=Stock(ticker_name)
+    Nasdaq_composite_data=[]
+    price=s.price
+    Nasdaq_composite_data.append(price)
+    Last_Trade=s.last_trade
+    Nasdaq_composite_data.append(Last_Trade)
+    change=s.change
+    Nasdaq_composite_data.append(change)
+    change_percent=s.cp
+    Nasdaq_composite_data.append(change_percent)
+    return jsonify(results = Nasdaq_composite_data)
 
 @app.route('/option_expire',methods=['GET', 'POST'])
 def expire_call():
@@ -121,20 +129,7 @@ def KeyData_Call():
     keydata_set=keydata.info
     return jsonify(results = keydata_set)
 
-@app.route('/Nasdaq_Data',methods=['GET', 'POST'])
-def Nasdaq_RT_Call():
-    ticker_name=request.args.get('ticker_name')
-    s=Stock(ticker_name)
-    Nasdaq_composite_data=[]
-    price=s.price
-    Nasdaq_composite_data.append(price)
-    Last_Trade=s.last_trade
-    Nasdaq_composite_data.append(Last_Trade)
-    change=s.change
-    Nasdaq_composite_data.append(change)
-    change_percent=s.cp
-    Nasdaq_composite_data.append(change_percent)
-    return jsonify(results = Nasdaq_composite_data)
+
 
 if __name__ == "__main__":
     app.run()
