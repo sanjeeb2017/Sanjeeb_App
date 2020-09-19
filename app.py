@@ -51,6 +51,13 @@ def Nasdaq_RT_Call():
     Nasdaq_composite_data.append(change_percent)
     return jsonify(results = Nasdaq_composite_data)
 
+@app.route('/Key_Data',methods=['GET', 'POST'])
+def Key_Data_Call():
+    ticker_name=request.args.get('ticker_name')
+    keydata=yf.Ticker(ticker_name)
+    result_set=keydata.info
+    return jsonify(results = result_set)
+
 @app.route('/option_expire',methods=['GET', 'POST'])
 def expire_call():
     ticker_name=request.args.get('ticker_name')
@@ -122,12 +129,7 @@ def OptionCall_Details():
     x_data.append(Underlying_P)
     return jsonify(results = x_data)
 
-@app.route('/Key_Data',methods=['GET', 'POST'])
-def KeyData_Call():
-    ticker_name=request.args.get('ticker_name')
-    keydata=yf.Ticker(ticker_name)
-    keydata_set=keydata.info
-    return jsonify(results = keydata_set)
+
 
 
 
