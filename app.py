@@ -36,13 +36,6 @@ def rt_stock_price():
     s = Stock(ticker_name)
     return '%s' %(s.price)
 
-@app.route('/earning_cal',methods=['GET', 'POST'])
-def EarningCal_Call():
-    ticker_name=request.args.get('ticker_name')
-    yahoo_financials = YahooFinancials(ticker_name)
-    earning_cal_data=yahoo_financials.get_stock_earnings_data() 
-    return jsonify(results = earning_cal_data)
-
 @app.route('/option_expire',methods=['GET', 'POST'])
 def expire_call():
     ticker_name=request.args.get('ticker_name')
@@ -84,12 +77,15 @@ def OptionPut_call():
 def OptionCall_Details():
     query_params=request.args
     query_result=query_params.to_dict()
+
     ticker_name=query_result['ticker_name']
     contractSymbol=query_result['contractSymbol']
     end_date=query_result['end_date']
+
     end_date_year=int(end_date.split('-')[0])
     end_date_month=int(end_date.split('-')[1])
     end_date_day=int(end_date.split('-')[2])
+
     ticker_info = yf.Ticker(ticker_name)
     opt = ticker_info.option_chain(end_date)
     Call_data=opt.calls
@@ -111,71 +107,19 @@ def OptionCall_Details():
     x_data.append(Underlying_P)
     return jsonify(results = x_data)
 
-
+@app.route('/earning_cal',methods=['GET', 'POST'])
+def EarningCal_Call():
+    ticker_name=request.args.get('ticker_name')
+    yahoo_financials = YahooFinancials(ticker_name)
+    earning_cal_data=yahoo_financials.get_stock_earnings_data() 
+    return jsonify(results = earning_cal_data)
 
 @app.route('/Key_Data',methods=['GET', 'POST'])
 def KeyData_Call():
     ticker_name=request.args.get('ticker_name')
     keydata=yf.Ticker(ticker_name)
     keydata_set=keydata.info
-    key_data=[]
-
-    #Sector
-    sector=keydata_set['sector']
-    key_data.append(sector)
-
-    # Full-time employees
-    fullTimeEmployees=keydata_set['fullTimeEmployees']
-    key_data.append(fullTimeEmployees)
-
-    #Summary
-    Summary=keydata_set['longBusinessSummary']
-    key_data.append(Summary)
-
-    #State 
-    state=keydata_set['state']
-    key_data.append(state)
-
-    #Country
-    country=keydata_set['country']
-    key_data.append(country)
-
-    #52 weeks low 
-    week_52_low=str(keydata_set['fiftyTwoWeekLow'])
-    key_data.append(week_52_low)
-  
-    #52 weeks high
-    week_52_high=str(keydata_set['fiftyTwoWeekHigh'])
-    key_data.append(week_52_high)
-
-    #Website
-    website=keydata_set['website']
-    key_data.append(website)
-
-    # Previous Close
-    Prev_close=keydata_set['previousClose']
-    key_data.append(Prev_close)
-
-    # Dividend Rate
-    Dividend_Rate=keydata_set['dividendRate']
-    key_data.append(Dividend_Rate)
-
-    #Market Cap
-    Market_Cap=keydata_set['marketCap']
-    key_data.append(Market_Cap)
-
-    # Vol 24 hour
-    Vol_24_hour=keydata_set['volume24Hr']
-    key_data.append(Vol_24_hour)
-
-    # dividendYield
-    dividendYield=str(keydata_set['dividendYield'])
-    key_data.append(dividendYield)
-
-    # trailingPE
-    trailingPE=str(keydata_set['trailingPE'])
-    key_data.append(trailingPE)
-    return jsonify(results = key_data)
+    return jsonify(results = keydata_set)
 
 @app.route('/Nasdaq_Data',methods=['GET', 'POST'])
 def Nasdaq_RT_Call():
