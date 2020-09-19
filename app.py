@@ -36,6 +36,13 @@ def rt_stock_price():
     s = Stock(ticker_name)
     return '%s' %(s.price)
 
+@app.route('/earning_cal',methods=['GET', 'POST'])
+def earningcal_call():
+    ticker_name=request.args.get('ticker_name')
+    yahoo_financials = YahooFinancials(ticker_name)
+    earning_cal_data=yahoo_financials.get_stock_earnings_data() 
+    return jsonify(results = earning_cal_data)
+
 @app.route('/option_expire',methods=['GET', 'POST'])
 def expire_call():
     ticker_name=request.args.get('ticker_name')
@@ -106,13 +113,6 @@ def OptionCall_Details():
     Underlying_P=str(g.underlying.price)
     x_data.append(Underlying_P)
     return jsonify(results = x_data)
-
-@app.route('/earning_cal',methods=['GET', 'POST'])
-def EarningCal_Call():
-    ticker_name=request.args.get('ticker_name')
-    yahoo_financials = YahooFinancials(ticker_name)
-    earning_cal_data=yahoo_financials.get_stock_earnings_data() 
-    return jsonify(results = earning_cal_data)
 
 @app.route('/Key_Data',methods=['GET', 'POST'])
 def KeyData_Call():
