@@ -56,7 +56,7 @@ def Key_Data_Call():
     ticker_name=request.args.get('ticker_name')
     keydata=yf.Ticker(ticker_name)
     result_set=keydata.info
-    return jsonify(results = result_set)
+    return '%s' %(ticker_name)
 
 @app.route('/option_expire',methods=['GET', 'POST'])
 def expire_call():
