@@ -54,8 +54,9 @@ def Nasdaq_RT_Call():
 @app.route('/Key_Data',methods=['GET', 'POST'])
 def Key_Data_Call():
     ticker_name=request.args.get('ticker_name')
-    s = Stock(ticker_name)
-    return '%s' %(s.price)
+    ticker_info = yf.Ticker(ticker_name)
+    ticker_info_data = ticker_info.info
+    return jsonify(results = ticker_info_data)
 
 @app.route('/option_expire',methods=['GET', 'POST'])
 def expire_call():
