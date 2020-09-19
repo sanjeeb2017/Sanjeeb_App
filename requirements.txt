@@ -22,3 +22,4 @@ wallstreet==0.3
 Werkzeug==1.0.1
 yahoofinancials==1.5
 yfinance==0.1.54
+ujson==2.0.2
