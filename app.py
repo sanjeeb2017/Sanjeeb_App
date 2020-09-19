@@ -77,15 +77,12 @@ def OptionPut_call():
 def OptionCall_Details():
     query_params=request.args
     query_result=query_params.to_dict()
-
     ticker_name=query_result['ticker_name']
     contractSymbol=query_result['contractSymbol']
     end_date=query_result['end_date']
-
     end_date_year=int(end_date.split('-')[0])
     end_date_month=int(end_date.split('-')[1])
     end_date_day=int(end_date.split('-')[2])
-
     ticker_info = yf.Ticker(ticker_name)
     opt = ticker_info.option_chain(end_date)
     Call_data=opt.calls
