@@ -51,12 +51,6 @@ def Nasdaq_RT_Call():
     Nasdaq_composite_data.append(change_percent)
     return jsonify(results = Nasdaq_composite_data)
 
-@app.route('/Key_Data',methods=['GET', 'POST'])
-def Key_Data_Call():
-    ticker_name=request.args.get('ticker_name')
-    ticker_info = yf.Ticker(ticker_name)
-    ticker_info_data = ticker_info.info
-    return jsonify(results = ticker_info_data)
 
 @app.route('/option_expire',methods=['GET', 'POST'])
 def expire_call():
@@ -129,9 +123,13 @@ def OptionCall_Details():
     x_data.append(Underlying_P)
     return jsonify(results = x_data)
 
-
-
-
+@app.route('/earning_per_share',methods=['GET', 'POST'])
+def EPS_call():
+    ticker_name=request.args.get('ticker_name')
+    yahoo_financials = YahooFinancials(ticker_name)
+    earning_cal_data=yahoo_financials.get_stock_earnings_data() 
+    earning_per_share=earning_cal_data[ticker_name]['earningsData']['quarterly']
+    return jsonify(results = earning_per_share)
 
 if __name__ == "__main__":
     app.run()
